@@ -8,6 +8,8 @@
 #define SIZE 50	
 //#define N 3
 
+
+// Define structure for pgm image
 typedef struct PGM
  {
 	char name[100];
@@ -27,7 +29,7 @@ void apply_padding(PGM* p,int n,int global_intensity);
 
 //void apply_median_filter(int** source, int** dest, int height, int width, int k, int filt);
 
-
+// Dynamically allocate the memory for image
 int ** create_matrix(int height, int width)
 {
 	int **matrix = malloc(height*sizeof(int*)) ;
@@ -43,7 +45,7 @@ int ** create_matrix(int height, int width)
 	return matrix;
 }
 
-
+// Dynamically allocate the memory for image
 float ** create_matrix1(int height, int width)
 {
 	
@@ -61,7 +63,7 @@ float ** create_matrix1(int height, int width)
 }
 
 
-
+// Skip comments if any in the header of the image 
 void skip_comments(FILE* fp, char* line, int size)
 {
 	do{
@@ -73,6 +75,8 @@ void skip_comments(FILE* fp, char* line, int size)
 	} while(line!= NULL);
 }
 
+
+// Read pgm image 
 PGM* f2p(char *file_name) {
 
 	FILE * fp;
@@ -121,6 +125,7 @@ PGM* f2p(char *file_name) {
 	return NULL;
 }
 
+// Write the image 
 void p2f(PGM* p, char *file_name) {
 	FILE* fp = fopen(file_name, "w");
 	fprintf(fp, "%s\n", p->name);
@@ -136,6 +141,7 @@ void p2f(PGM* p, char *file_name) {
 	fclose(fp);
 }
 
+// Find maximum to utilize in Homogeneous Unsharp Masking 
 float find_max(float **scale, int h, int w)
 {
  int i, j;
@@ -153,6 +159,7 @@ float find_max(float **scale, int h, int w)
  
 }
 
+// Homogeneous Unsharp Masking 
 void apply_hum(int **source, int** dest,float** scale, int height, int width,int k,int filt,int global_intensity) 
 {
 	int i,j,l,m;
@@ -245,7 +252,7 @@ void apply_hum(int **source, int** dest,float** scale, int height, int width,int
 
 
 
-
+// Apply zero padding 
 void apply_padding(PGM* p,int n, int global_intensity)
 {
 	int k;
@@ -299,7 +306,7 @@ void apply_padding(PGM* p,int n, int global_intensity)
 	
 }
 
-
+// Calculate Global Mean Intensity
 int calc(PGM *p)
 {
 
